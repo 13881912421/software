@@ -1,0 +1,208 @@
+openapi: 3.0.3
+info:
+  title: Bookstore API
+  description: 图书管理系统 API 规范V2
+  version: 1.0.0
+  contact:
+    name: 开发团队
+    email: team@example.com
+servers:
+  - url: http://localhost:8080/api
+    description: 本地开发服务器
+paths:
+  /books:
+    get:
+      summary: 获取所有图书
+      description: 返回系统中的所有图书列表
+      responses:
+        '200':
+          description: 成功获取图书列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '500':
+          description: 服务器内部错误
+    post:
+      summary: 添加新图书
+      description: 向系统中添加一本新图书
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookInput'
+      responses:
+        '201':
+          description: 图书创建成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: 请求参数无效
+        '500':
+          description: 服务器内部错误
+  
+  /books/{bookId}:
+    get:
+      summary: 根据ID获取图书
+      description: 返回指定ID的图书详情
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: 图书ID
+      responses:
+        '200':
+          description: 成功获取图书
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: 图书不存在
+        '500':
+          description: 服务器内部错误
+    put:
+      summary: 更新图书信息
+      description: 更新指定ID的图书信息
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookInput'
+      responses:
+        '200':
+          description: 图书更新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: 图书不存在
+        '400':
+          description: 请求参数无效
+        '500':
+          description: 服务器内部错误
+    delete:
+      summary: 删除图书
+      description: 删除指定ID的图书
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '204':
+          description: 图书删除成功
+        '404':
+          description: 图书不存在
+        '500':
+          description: 服务器内部错误
+
+components:
+  schemas:
+    Book:
+      type: object
+      required:
+        - id
+        - title
+        - author
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+          description: 图书唯一标识符
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: 图书标题
+        author:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: 作者姓名
+        isbn:
+          type: string
+          pattern: '^[0-9]{13}$'
+          description: ISBN编号（13位数字）
+        publishedDate:
+          type: string
+          format: date
+          description: 出版日期
+        price:
+          type: number
+          format: float
+          minimum: 0
+          description: 图书价格
+        stock:
+          type: integer
+          minimum: 0
+          description: 库存数量
+      example:
+        id: 1
+        title: "深入理解计算机系统"
+        author: "Randal E. Bryant"
+        isbn: "9787111321330"
+        publishedDate: "2011-01-01"
+        price: 99.00
+        stock: 50
+    
+    BookInput:
+      type: object
+      required:
+        - title
+        - author
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: 图书标题
+        author:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: 作者姓名
+        isbn:
+          type: string
+          pattern: '^[0-9]{13}$'
+          description: ISBN编号（13位数字）
+        publishedDate:
+          type: string
+          format: date
+          description: 出版日期
+        price:
+          type: number
+          format: float
+          minimum: 0
+          description: 图书价格
+        stock:
+          type: integer
+          minimum: 0
+          description: 库存数量
+      example:
+        title: "代码大全"
+        author: "Steve McConnell"
+        isbn: "9787121022982"
+        publishedDate: "2006-03-01"
+        price: 88.00
+        stock: 100

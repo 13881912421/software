@@ -1,0 +1,9 @@
+org\openapitools\model\BookInput.class
+org\openapitools\OpenApiGeneratorApplication.class
+org\openapitools\api\ApiUtil.class
+org\openapitools\RFC3339DateFormat.class
+org\openapitools\api\BooksApiController.class
+org\openapitools\api\BooksApi.class
+org\openapitools\configuration\SpringDocConfiguration.class
+org\openapitools\configuration\HomeController.class
+org\openapitools\model\Book.class

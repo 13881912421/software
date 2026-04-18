@@ -1,0 +1,43 @@
+# .github/workflows/openapi-auto-generate.yml
+name: OpenAPI Auto Generate & Validate
+on:
+  push:
+    paths: ["book.yaml"] # 仅契约变更时触发
+jobs:
+  validate-and-generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 配置JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: 下载OpenAPI Generator
+        run: curl -o openapi-generator-cli.jar https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.8.0/openapi-generator-cli-7.8.0.jar
+
+      - name: 校验API契约合法性
+        run: java -jar openapi-generator-cli.jar validate -i book.yaml # 校验失败直接终止
+
+      - name: 重新生成Spring代码
+        run: |
+          java -jar openapi-generator-cli.jar generate \
+            -g spring \
+            -i book.yaml \
+            -o ./book-server \
+            --api-package org.openapitools.api \
+            --model-package org.openapitools.model
+
+      - name: 编译&测试生成代码
+        run: cd ./book-server && mvn clean test
+
+      - name: 自动提交生成代码
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add ./book-server/src/main/java/org/openapitools/
+          git commit -m "chore: auto-generate code for book.yaml update"
+          git push
