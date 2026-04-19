@@ -3,7 +3,7 @@ info:
   contact:
     email: team@example.com
     name: 开发团队
-  description: 图书管理系统 API 规范V1.0.2
+  description: 图书管理系统 API 规范V1.1.1
   title: Bookstore API
   version: 1.0.0
 servers:
