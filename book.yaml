@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Bookstore API
-  description: 图书管理系统 API 规范V1.0.2
+  description: 图书管理系统 API 规范V1.1.1
   version: 1.0.0
   contact:
     name: 开发团队
