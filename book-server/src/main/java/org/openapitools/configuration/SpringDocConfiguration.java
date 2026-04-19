@@ -19,7 +19,7 @@ public class SpringDocConfiguration {
                 .info(
                         new Info()
                                 .title("Bookstore API")
-                                .description("图书管理系统 API 规范V1.0.0")
+                                .description("图书管理系统 API 规范V1.0.2")
                                 .contact(
                                         new Contact()
                                                 .name("开发团队")
