@@ -3,6 +3,8 @@ name: OpenAPI Auto Generate & Validate
 on:
   push:
     paths: ["book.yaml"] # 仅契约变更时触发
+permissions:
+  contents: write
 jobs:
   validate-and-generate:
     runs-on: ubuntu-latest
@@ -10,10 +12,10 @@ jobs:
       - name: 拉取代码
         uses: actions/checkout@v4
 
-      - name: 配置JDK 8
+      - name: 配置JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '8'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: 下载OpenAPI Generator
@@ -30,7 +32,7 @@ jobs:
             -o ./book-server \
             --api-package org.openapitools.api \
             --model-package org.openapitools.model
-
+            -- --additional-properties=groupId=com.example,artifactId=bookstore,packageName=com.example.bookstore,javaVersion=17
       - name: 编译&测试生成代码
         run: cd ./book-server && mvn clean test
 
