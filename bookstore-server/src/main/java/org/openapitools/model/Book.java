@@ -20,7 +20,7 @@ import javax.annotation.Generated;
  * Book
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-04-19T15:55:57.659015500+08:00[Asia/Shanghai]", comments = "Generator version: 7.8.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-04-19T16:04:14.999088500+08:00[Asia/Shanghai]", comments = "Generator version: 7.8.0")
 public class Book {
 
   private Long id;
